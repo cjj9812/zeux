@@ -1,0 +1,65 @@
+<ehcache>
+
+    <diskStore path="java.io.tmpdir"/>
+
+    <defaultCache
+            maxElementsInMemory="10000"
+            timeToIdleSeconds="120"
+            timeToLiveSeconds="120"
+            maxElementsOnDisk="10000000"
+            diskExpiryThreadIntervalSeconds="120"
+            memoryStoreEvictionPolicy="LRU">
+        <!--<persistence strategy="localTempSwap"/>-->
+    </defaultCache>
+
+    <!-- 登录记录缓存 锁定2分钟 -->
+    <cache name="passwordRetryCache"
+           maxEntriesLocalHeap="10000"
+           eternal="false"
+           timeToIdleSeconds="120"
+           timeToLiveSeconds="0"
+           overflowToDisk="false"
+           statistics="false">
+    </cache>
+
+    <!-- 组织架构缓存 锁定2分钟-->
+    <cache name="organizationalStructureCache"
+           maxEntriesLocalHeap="10000"
+           eternal="false"
+           timeToIdleSeconds="600"
+           timeToLiveSeconds="0"
+           overflowToDisk="false"
+           statistics="false">
+    </cache>
+
+    <!-- 人事管理缓存 锁定两分钟-->
+    <cache name="personnelManagementCache"
+           maxEntriesLocalHeap="10000"
+           eternal="false"
+           timeToIdleSeconds="600"
+           timeToLiveSeconds="0"
+           overflowToDisk="false"
+           statistics="false">
+    </cache>
+
+    <!-- 字典元素缓存 -->
+    <cache name="dictionary"
+           maxElementsInMemory="10000"
+           eternal="true"
+           overflowToDisk="true"
+           maxElementsOnDisk="10000000"
+           diskExpiryThreadIntervalSeconds="120"
+           memoryStoreEvictionPolicy="LFU">
+    </cache>
+
+    <cache name="devToken"
+           maxElementsInMemory="10000"
+           eternal="true"
+           overflowToDisk="true"
+           maxElementsOnDisk="10000000"
+           timeToIdleSeconds="0"
+           timeToLiveSeconds="3600"
+           diskExpiryThreadIntervalSeconds="120"
+           memoryStoreEvictionPolicy="LFU">
+    </cache>
+</ehcache>

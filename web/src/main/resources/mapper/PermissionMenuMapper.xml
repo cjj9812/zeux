@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanshen.module.system.dao.PermissionMenuDao">
+
+    <resultMap id="baseMap" type="com.nanshen.module.system.entity.PermissionMenu">
+        <id column="id" property="id"/>
+        <result column="menu_icon" property="menuIcon"/>
+        <result column="menu_order" property="menuOrder"/>
+    </resultMap>
+
+
+    <select id="findById" resultMap="baseMap">
+        select * from permission_menu where id = #{id};
+    </select>
+
+
+    <insert id="save" useGeneratedKeys="true" keyProperty="id" >
+        insert into permission_menu (id,menu_icon, menu_order)
+        values (#{id},#{menuIcon}, #{menuOrder});
+    </insert>
+
+    <update id="update" parameterType="com.nanshen.module.system.entity.PermissionMenu">
+        update permission_menu
+        <set>
+            <if test="menuIcon!=null">
+                menu_icon=#{menuIcon},
+            </if>
+            <if test="menuOrder!=null">
+                menu_order=#{menuOrder},
+            </if>
+        </set>
+        where id=#{id};
+    </update>
+    
+    <delete id="deleteById">
+        delete from permission_menu where id=#{id};
+    </delete>
+
+</mapper>

@@ -1,0 +1,26 @@
+spring:
+  ## 数据库配置
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://211.149.197.98:3306/wzh?useSSL=false&characterEncoding=utf-8
+    username: root
+    password: LCode1996.
+
+mybatis:
+  mapperLocations: classpath:mapper/*Mapper.xml
+
+shiro:
+  user:
+    # 登录地址
+    loginUrl: /login
+    # 权限认证失败地址
+    unauthorizedUrl: /unauth
+    # 首页地址
+    indexUrl: /index
+
+  cache:
+    # cookie生效时间，单位秒
+    maxAge: 3600
+
+server:
+  port: 8081

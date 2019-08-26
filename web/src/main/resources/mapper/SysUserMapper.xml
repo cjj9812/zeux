@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanshen.module.system.dao.SysUserDao">
+
+    <resultMap id="baseMap" type="com.nanshen.module.system.entity.SysUser">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="password" property="password"/>
+        <result column="phone" property="phone"/>
+        <result column="remark" property="remark"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="is_del" property="isDel"/>
+        <result column="status" property="status"/>
+    </resultMap>
+
+    <resultMap id="userMap" type="com.nanshen.module.system.entity.SysUser">
+        <id column="uid" property="id"/>
+        <result column="uname" property="name"/>
+        <result column="phone" property="phone"/>
+        <collection property="roles" ofType="com.nanshen.module.system.entity.Role">
+            <id column="rid" property="id"/>
+            <result column="rname" property="name"/>
+            <result column="rdescription" property="description"/>
+            <collection property="permissions" ofType="com.nanshen.module.system.entity.Permission">
+                <id column="id" property="id"/>
+                <result column="name" property="name"/>
+                <result column="code" property="code"/>
+                <result column="description" property="description"/>
+                <result column="status" property="status"/>
+                <result column="pid" property="pid"/>
+                <result column="type_id" property="type"/>
+            </collection>
+        </collection>
+    </resultMap>
+
+    
+
+    <sql id="sql">
+        u.id as uid,u.name as uname,u.phone,r.id as rid,r.name as rname,r.description as rdescription,p.id,p.pid,p.name,p.code,p.description,p.type_id
+    </sql>
+
+
+    <select id="selectById" resultMap="userMap">
+        select <include refid="sql"/>
+        from sys_user u
+        left join  user_role ur on u.id=ur.user_id
+        left join role r on r.id=ur.role_id
+        left join role_permission rp on r.id=rp.role_id
+        left join permission p on p.id=rp.permission_id
+        where u.id = #{id};
+    </select>
+
+
+    <select id="findById" resultMap="baseMap">
+        select * from sys_user where id =#{id};
+    </select>
+
+    <select id="findByName" resultMap="baseMap">
+        select * from sys_user where name =#{name};
+    </select>
+
+    <select id="listUser" resultMap="baseMap">
+        select * from sys_user;
+    </select>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id" >
+        insert into sys_user (id,name,password,phone,remark,create_time,update_time,is_del,status)
+        values (#{id},#{name},#{password},#{phone},#{remark},#{createTime},#{updateTime},#{isDel},#{status});
+    </insert>
+
+    <update id="updateByPrimaryKey" parameterType="com.nanshen.module.system.entity.SysUser">
+        update sys_user
+        <set>
+            <if test="name!=null">
+                name=#{name},
+            </if>
+            <if test="password!=null">
+                password=#{password},
+            </if>
+            <if test="phone!=null">
+                phone=#{phone},
+            </if>
+            <if test="remark!=null">
+                remark=#{remark},
+            </if>
+            <if test="createTime!=null">
+                create_time=#{createTime},
+            </if>
+            <if test="updateTime!=null">
+                update_time=#{updateTime},
+            </if>
+            <if test="isDel!=null">
+                is_del=#{isDel},
+            </if>
+            <if test="status!=null">
+                status=#{status},
+            </if>
+        </set>
+        where id=#{id};
+    </update>
+    
+    <delete id="deleteById">
+        delete from sys_user where id=#{id};
+    </delete>
+
+    <insert id="assignRoles" parameterType="com.nanshen.module.system.entity.SysUser">
+        insert into user_role(user_id,role_id) values
+        <foreach collection="su.roles" item="item" index="index" separator=",">
+            (#{su.id},#{item.id})
+        </foreach>
+        ON DUPLICATE KEY UPDATE
+        user_id = #{su.id}
+    </insert>
+
+    <select id="findAll" parameterType="java.util.Map" resultMap="baseMap">
+        select id,name,phone,remark,create_time from sys_user
+        where 1=1 and is_del='false'
+        <if test="map.name!=null">
+            and name like #{map.name}
+        </if>
+    </select>
+
+</mapper>

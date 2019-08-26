@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanshen.module.system.dao.SysFileDao">
+
+    <resultMap id="baseMap" type="com.nanshen.module.system.entity.SysFile">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="size" property="size"/>
+        <result column="suffix" property="suffix"/>
+        <result column="md5" property="md5"/>
+        <result column="path" property="path"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="is_del" property="isDel"/>
+
+    </resultMap>
+
+
+    <select id="selectByPrimaryKey" resultMap="baseMap">
+        select * from sys_file where id = #{id};
+    </select>
+
+    
+    <select id="findByMd5" resultMap="baseMap">
+        select * from sys_file where md5=#{md5};
+    </select>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id" >
+        insert into sys_file( name,size,suffix,md5,path,create_time,is_del) values (#{name},#{size},#{suffix},#{md5},#{path},#{createTime},#{isDel});
+    </insert>
+
+    <update id="updateByPrimaryKey" parameterType="com.nanshen.module.system.entity.SysFile">
+        update sys_file
+        <set>
+            <if test="name!=null">
+                name=#{name},
+            </if>
+            <if test="size!=null">
+                size=#{size},
+            </if>
+            <if test="suffix!=null">
+                suffix=#{suffix},
+            </if>
+            <if test="md5!=null">
+                md5=#{md5},
+            </if>
+            <if test="path!=null">
+                path=#{path},
+            </if>
+            <if test="createTime!=null">
+                cteate_time=#{createTime},
+            </if>
+            <if test="updateTime!=null">
+                update_time=#{updateTime},
+            </if>
+            <if test="isDel!=null">
+                is_del=#{isDel},
+            </if>
+        </set>
+        where id=#{id};
+    </update>
+    
+    <delete id="deleteByPrimaryKey">
+        delete from sys_file where id=#{id};
+    </delete>
+
+</mapper>

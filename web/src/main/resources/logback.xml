@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <!-- 将日志输出在当前项目的根目录下 -->
+    <property name="contextPath" value="/usr/local/mdsoftware/wwwroot/JiCaiZhongBao/logs"/>
+    <!-- 日志的上下文路径 -->
+    <property name="logPath" value="${contextPath}"/>
+    <!-- 配置日志的滚动时间 -->
+    <property name="maxHistory" value="6"/>
+
+    <!-- 默认的控制台日志输出，一般生产环境都是后台启动，这个没太大作用 -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <Pattern>%date{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{80} - %msg%n</Pattern>
+        </encoder>
+    </appender>
+
+    <root level="info">
+        <appender-ref ref="STDOUT"/>
+    </root>
+
+    <!--
+    	定义日志的输出方式:输出在文件夹debug/debug.log文件中
+    	配置所有类所有级别的滚动日志
+    -->
+    <appender name="rootRollingDebug" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${logPath}/debug/debug.log</file>
+
+        <!--滚动策略设置根据时间滚动-->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${logPath}/debug/debug.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <!-- 设置日志保存时间，如maxHistory为6则表示保存最近六个月的日志 -->
+            <maxHistory>${maxHistory}</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%date{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36}.%M - %msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>DEBUG</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+
+    <!--
+    	定义日志的输出方式:输出在文件夹info/root.log文件中
+    	配置所有类INFO级别的滚动日志
+    -->
+    <appender name="rootRollingInfo" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${logPath}/info/info.log</file>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${logPath}/info/info.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <!-- 设置日志的滚动时间 -->
+            <maxHistory>${maxHistory}</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%date{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36}.%M - %msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>INFO</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+
+    <!--
+    	定义日志的输出方式:输出在文件夹warn/root.log文件中
+    	配置所有类WARN级别的滚动日志
+    -->
+    <appender name="rootRollingWarn" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${logPath}/warn/warn.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${logPath}/warn/warn.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <!-- 设置日志的滚动时间 -->
+            <maxHistory>${maxHistory}</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%date{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36}.%M - %msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+        <!-- warn/root.log文件中的日志级别是 WARN以上的级别  -->
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>WARN</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+    <!--
+    	定义日志的输出方式:输出在文件夹error/root.log文件中
+    	配置所有类ERROR级别的滚动日志
+    -->
+    <appender name="rootRollingError" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${logPath}/error/error.log</file>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${logPath}/error/error.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <!-- 设置日志的滚动时间 -->
+            <maxHistory>${maxHistory}</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%date{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36}.%M - %msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+        <!-- error/root.log文件中的日志级别是 ERROR以上的级别 -->
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+
+    <!--
+    	定义日志的输出方式:输出在文件夹trace/root.log文件中
+    	打印业务逻辑级别的日志到trace文件下
+    -->
+    <appender name="traceRollingTrace" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${logPath}/trace/trace.log</file>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${logPath}/trace/trace.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <!-- 设置日志的滚动时间 -->
+            <maxHistory>${maxHistory}</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%date{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36}.%M - %msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>TRACE</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+
+    <root level="INFO">
+        <appender-ref ref="rootRollingDebug"/>
+        <appender-ref ref="traceRollingTrace"/>
+        <appender-ref ref="rootRollingWarn"/>
+        <appender-ref ref="rootRollingError"/>
+        <appender-ref ref="rootRollingInfo"/>
+    </root>
+</configuration>

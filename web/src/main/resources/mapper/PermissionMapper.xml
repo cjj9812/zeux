@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanshen.module.system.dao.PermissionDao">
+
+    <resultMap id="baseMap" type="com.nanshen.module.system.entity.Permission">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="code" property="code"/>
+        <result column="description" property="description"/>
+        <result column="status" property="status"/>
+        <result column="pid" property="pid"/>
+        <result column="is_first" property="isFirst"/>
+        <result column="type_id" property="type"/>
+    </resultMap>
+
+    <resultMap id="permissionMap" type="com.nanshen.module.system.entity.Permission">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="code" property="code"/>
+        <result column="description" property="description"/>
+        <result column="status" property="status"/>
+        <result column="pid" property="pid"/>
+        <result column="is_first" property="isFirst"/>
+        <result column="type_id" property="type"/>
+        <collection property="permissions" ofType="com.nanshen.module.system.entity.Permission" column="id" select="findRootAll"/>
+    </resultMap>
+
+    <select id="findRootAll" parameterType="java.lang.String" resultMap="permissionMap">
+        SELECT * from permission where pid = #{pid}
+    </select>
+
+
+    <select id="findById" resultMap="baseMap">
+        select * from permission where id = #{id};
+    </select>
+
+    <select id="findAll" resultMap="baseMap">
+        select * from permission where 1=1
+        <choose>
+            <when test="type==0">
+                and type_id in (1,2)
+            </when>
+            <otherwise>
+                and type_id in (#{type})
+            </otherwise>
+        </choose>
+        <if test="pid!=null">
+            and pid in (#{pid})
+        </if>
+    </select>
+
+    <select id="findByTypeAndPid" resultMap="baseMap">
+        select * from permission where type_id=#{type} and pid=#{pid};
+    </select>
+
+    <insert id="save" useGeneratedKeys="true" keyProperty="id" >
+        insert into permission (id,name,code,description,status,pid,type_id,is_first)
+        values (#{id},#{name},#{code},#{description},#{status},#{pid},#{type},#{isFirst});
+    </insert>
+
+    <update id="update" parameterType="com.nanshen.module.system.entity.Permission">
+        update permission
+        <set>
+            <if test="name!=null">
+                name=#{name},
+            </if>
+            <if test="code!=null">
+                code=#{code},
+            </if>
+            <if test="description!=null">
+                description=#{description},
+            </if>
+            <if test="status!=null">
+                status=#{status},
+            </if>
+            <if test="pid!=null">
+                pid=#{pid},
+            </if>
+            <if test="type!=null">
+                type_id=#{type}
+            </if>
+        </set>
+        where id=#{id};
+    </update>
+    
+    <delete id="deleteById">
+        delete from permission where id=#{id};
+    </delete>
+
+</mapper>
