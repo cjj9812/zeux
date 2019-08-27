@@ -14,4 +14,8 @@ public class SelfException extends Exception {
         this.iEnum=iEnum;
     }
 
+    public SelfException (String message){
+        super(message);
+    }
+
 }

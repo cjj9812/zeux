@@ -8,6 +8,7 @@ import com.nanshen.component.fileupload.config.FileProperties;
 import com.nanshen.component.image.qrcore.QRCoreProperties;
 import com.nanshen.component.image.qrcore.QRCoreUtil;
 
+import exceptions.QRDrawException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,17 +37,14 @@ public class QRCoreController extends BaseController {
 
 
     @GetMapping("")
-    public ReMessage qrcore(@RequestParam(name = "content") String content, HttpServletRequest request, HttpServletResponse response) throws IOException, WriterException {
+    public ReMessage qrcore(@RequestParam(name = "content") String content, HttpServletRequest request, HttpServletResponse response) throws QRDrawException {
 
         String qrName= UUID.randomUUID().toString().replace("-","")+".png";
         String qrPath="/usr/local/mdsoftware/wwwroot/JiCaiZhongBao/files/qrcore/"+qrName;
-
         File file=new File(qrCoreProperties.getSavePath());
         if(file.exists()==false) file.mkdirs();
         qrCoreUtil.createQRCode(content,qrPath,300,300);
-
         String url=fileProperties.getIp()+qrPath.replace(fileProperties.getDefaultDir(),"");
-
         return success(url);
     }
 }

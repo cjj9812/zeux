@@ -7,7 +7,7 @@ import com.google.zxing.WriterException;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
-import org.springframework.beans.factory.annotation.Autowired;
+import exceptions.QRDrawException;
 import org.springframework.stereotype.Component;
 
 import java.awt.image.BufferedImage;
@@ -18,12 +18,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Component
-public class QRCoreUtil {
+public class QRCoreUtil {  //NOSONAR
 
-    private static final int width = 300;// 默认二维码宽度
-    private static final int height = 300;// 默认二维码高度
-    private static final String format = "png";// 默认二维码文件格式
-    private static final Map<EncodeHintType, Object> hints = new HashMap();// 二维码参数
+    private static final int DEFAULT_WIDTH = 300;// 默认二维码宽度
+    private static final int DEFAULT_HEIGHT = 300;// 默认二维码高度
+    private static final String FORMAT = "png";// 默认二维码文件格式
+    private static final Map<EncodeHintType, Object> hints = new HashMap();// 二维码参数  //NOSONAR
 
     static {
         hints.put(EncodeHintType.CHARACTER_SET, "utf-8");// 字符编码
@@ -36,7 +36,7 @@ public class QRCoreUtil {
      * @param width   宽
      * @param height  高
      */
-    public static BufferedImage toBufferedImage(String content, int width, int height) throws WriterException, IOException {
+    public static BufferedImage toBufferedImage(String content, int width, int height) throws WriterException {
         BitMatrix bitMatrix = new MultiFormatWriter().encode(content, BarcodeFormat.QR_CODE, width, height, hints);
         return MatrixToImageWriter.toBufferedImage(bitMatrix);
     }
@@ -49,7 +49,7 @@ public class QRCoreUtil {
      */
     public static void writeToStream(String content, OutputStream stream, int width, int height) throws WriterException, IOException {
         BitMatrix bitMatrix = new MultiFormatWriter().encode(content, BarcodeFormat.QR_CODE, width, height, hints);
-        MatrixToImageWriter.writeToStream(bitMatrix, format, stream);
+        MatrixToImageWriter.writeToStream(bitMatrix, FORMAT, stream);
     }
     /**
      * 生成二维码图片文件
@@ -58,10 +58,34 @@ public class QRCoreUtil {
      * @param width   宽
      * @param height  高
      */
-    public static void createQRCode(String content, String path, int width, int height) throws WriterException, IOException {
-        BitMatrix bitMatrix = new MultiFormatWriter().encode(content, BarcodeFormat.QR_CODE, width, height, hints);
+    public static void createQRCode(String content, String path, int width, int height) throws QRDrawException {
+
+        BitMatrix bitMatrix = null;
+        try {
+            bitMatrix = new MultiFormatWriter().encode(content, BarcodeFormat.QR_CODE, width, height, hints);
+        } catch (WriterException e) {
+            throw new QRDrawException("生成二维码图片异常");
+        }
         //toPath() 方法由 jdk1.7 及以上提供
-        MatrixToImageWriter.writeToPath(bitMatrix, format, new File(path).toPath());
+        try {
+            MatrixToImageWriter.writeToPath(bitMatrix, FORMAT, new File(path).toPath());
+        } catch (IOException e) {
+            throw new QRDrawException("生成二维码图片异常，目标路径找不到");
+        }
+    }
+
+
+    /**
+     * 在服务器生产二维码图片
+     * @param content
+     * @param path
+     * @throws WriterException
+     * @throws IOException
+     */
+    public static void createQRCode(String content, String path) throws WriterException, IOException {
+        BitMatrix bitMatrix = new MultiFormatWriter().encode(content, BarcodeFormat.QR_CODE, DEFAULT_WIDTH, DEFAULT_HEIGHT, hints);
+        //toPath() 方法由 jdk1.7 及以上提供
+        MatrixToImageWriter.writeToPath(bitMatrix, FORMAT, new File(path).toPath());
     }
 }
 
