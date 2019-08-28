@@ -8,7 +8,6 @@ import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 import exceptions.QRDrawException;
-import org.springframework.stereotype.Component;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -17,7 +16,7 @@ import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Map;
 
-@Component
+
 public class QRCoreUtil {  //NOSONAR
 
     private static final int DEFAULT_WIDTH = 300;// 默认二维码宽度

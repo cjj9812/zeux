@@ -31,7 +31,7 @@ public class FileUtil {
         sysFile.setCreateTime(TimeUtil.now());
         sysFile.setIsDel("false");
         sysFile.setMd5(MD5Util.fileMd5(multipartFile));
-        sysFile.setPath(saveDir+"/"+fileType+"/"+genDateMkdir("yyyyMMdd")+"/"+sysFile.getMd5()+"."+sysFile.getSuffix());
+        sysFile.setPath(saveDir+"/"+fileType+"/"+getDateMkdir("yyyyMMdd")+"/"+sysFile.getMd5()+"."+sysFile.getSuffix());
          return sysFile;
     }
 
@@ -55,7 +55,7 @@ public class FileUtil {
 
 
     //
-    public static String genDateMkdir(String format){
+    public static String getDateMkdir(String format){
         SimpleDateFormat sdf = new SimpleDateFormat(format);
         return sdf.format(new Date());
     }

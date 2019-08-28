@@ -34,10 +34,14 @@ server:
   error:
     path: /error
 
+
+#文件配置
 file:
   default:
-    dir: /usr/local/mdsoftware/wwwroot/JiCaiZhongBao/files
+    dir: /usr/local/mdsoftware/wwwroot/files
     ip: www.hxxxpt.com
+  qrCore:
+    dir: /usr/local/mdsoftware/wwwroot/files/qrcore/
 
 logging:
   level:

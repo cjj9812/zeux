@@ -146,7 +146,6 @@ public class UploadController extends BaseController {
     private SysFile saveFile(InputStream inputStream, String mediaId,String fileType) {
         byte[] data = new byte[10240];
         int len = 0;
-        FileOutputStream fileOutputStream = null;
         String saveDir=fileProperties.getDefaultDir()+"/wx/";
         File parentFile=new File(saveDir);
         if(!parentFile.exists()){
@@ -154,28 +153,12 @@ public class UploadController extends BaseController {
         }
         String realPath=saveDir+mediaId+"."+fileType.toLowerCase();
         File saveFile=new File(realPath);
-        try {
-            fileOutputStream = new FileOutputStream(saveFile);
+        try (FileOutputStream fileOutputStream=new FileOutputStream(saveFile);){
             while ((len = inputStream.read(data)) != -1) {
                 fileOutputStream.write(data, 0, len);
             }
         } catch (IOException e) {
             e.printStackTrace();
-        } finally {
-            if (inputStream != null) {
-                try {
-                    inputStream.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (fileOutputStream != null) {
-                try {
-                    fileOutputStream.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
         }
         File file=new File(realPath);
         SysFile sysFile=new SysFile();

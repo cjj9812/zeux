@@ -19,6 +19,7 @@
         <module>excel</module>
         <module>actionLog</module>
         <module>image</module>
+        <module>wechat</module>
     </modules>
 
     <dependencies>

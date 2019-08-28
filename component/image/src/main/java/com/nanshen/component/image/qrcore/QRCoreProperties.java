@@ -2,22 +2,13 @@ package com.nanshen.component.image.qrcore;
 
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.stereotype.Component;
+import org.springframework.context.annotation.Configuration;
 
-@Component
-@PropertySource(name = "qrcore.properties" ,value = "classpath:properties/qrcore.properties")
+@Configuration
 @Data
 public class QRCoreProperties {
 
-
-    @Value("${height}")
-    private Integer height;
-
-    @Value("${width}")
-    private Integer width;
-
-    @Value("${savePath}")
+    @Value("${file.qrCore.dir}")
     private String savePath;
 
 }
