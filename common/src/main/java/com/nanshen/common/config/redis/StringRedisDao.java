@@ -8,10 +8,11 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Component;
 
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 @Component
-public class RedisDao {
+public class StringRedisDao {
 
     @Autowired
     RedisTemplate redisTemplate;
@@ -19,7 +20,7 @@ public class RedisDao {
     @Autowired
     StringRedisTemplate stringRedisTemplate;
 
-    private static final Logger logger= LoggerFactory.getLogger(RedisDao.class);
+    private static final Logger logger= LoggerFactory.getLogger(StringRedisDao.class);
 
 
     /**
@@ -30,6 +31,24 @@ public class RedisDao {
     public void set(final String key,Object value){
         ValueOperations valueOperations = redisTemplate.opsForValue();
         valueOperations.set(key,value);
+    }
+
+    /**
+     * 批量插入
+     * @param map
+     */
+    public void multiSet(final Map map){
+        ValueOperations valueOperations=redisTemplate.opsForValue();
+        valueOperations.multiSet(map);
+    }
+
+    /**
+     * 批量插入(如果存在则不插入，不存在则插入)
+     * @param map
+     */
+    public void multiSetIfAbsent(final Map map){
+        ValueOperations valueOperations=redisTemplate.opsForValue();
+        valueOperations.multiSetIfAbsent(map);
     }
 
     /**
@@ -49,8 +68,22 @@ public class RedisDao {
      * @param key
      */
     public void remove(final String key){
-        ValueOperations valueOperations = redisTemplate.opsForValue();
         redisTemplate.delete(key);
     }
+
+
+    /**
+     * 根据key获取值
+     * @param key
+     * @return
+     */
+    public Object get(final String key){
+        ValueOperations valueOperations = redisTemplate.opsForValue();
+        return valueOperations.get(key);
+    }
+
+
+
+
 
 }
