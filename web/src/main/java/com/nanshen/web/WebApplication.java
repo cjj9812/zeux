@@ -10,7 +10,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
-@ComponentScan(basePackages = {"com.nanshen.module.system" ,"com.nanshen.component.shiro","com.nanshen.common","com.nanshen.web","com.nanshen.component"})
+@ComponentScan(basePackages = {"com.nanshen.module.system" ,"com.nanshen.component.shiro","com.nanshen.common","com.nanshen.common","com.nanshen.web","com.nanshen.component"})
 @MapperScan(basePackages = {"com.nanshen.module.system.dao"})
 @EnableCaching
 @EnableScheduling   //开启定时任务
@@ -20,9 +20,5 @@ public class WebApplication extends SpringBootServletInitializer {
         SpringApplication.run(WebApplication.class, args);
     }
 
-//    @Override
-//    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-//        return application.sources(WebApplication.class);
-//    }
 
 }

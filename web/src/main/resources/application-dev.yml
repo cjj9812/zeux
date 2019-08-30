@@ -3,9 +3,9 @@ spring:
   ## 数据库配置
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://211.149.161.57:3306/jicai?useSSL=false&characterEncoding=utf-8
+    url: jdbc:mysql://111.230.115.89:3306/jicai?useSSL=false&characterEncoding=utf-8
     username: root
-    password: thinkit2017
+    password: Scnu1123$
   cache:
     type: ehcache
     ehcache:
@@ -13,6 +13,17 @@ spring:
   servlet:
     multipart:
       max-file-size: 8MB
+  #redis配置
+  redis:
+    database: 0
+    host: 111.230.115.89
+    port: 6379
+    lettuce:
+      pool:
+        max-active: 500
+        max-idle: 100
+        max-wait: 10
+        min-idle: 1
 
 mybatis:
   mapperLocations: classpath:mapper/*Mapper.xml

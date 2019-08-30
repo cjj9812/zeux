@@ -1,10 +1,29 @@
+
 spring:
   ## 数据库配置
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://211.149.197.98:3306/wzh?useSSL=false&characterEncoding=utf-8
+    url: jdbc:mysql://111.230.115.89:3306/jicai?useSSL=false&characterEncoding=utf-8
     username: root
-    password: LCode1996.
+    password: Scnu1123$
+  cache:
+    type: ehcache
+    ehcache:
+      config: classpath:config/ehcache-shiro.xml
+  servlet:
+    multipart:
+      max-file-size: 8MB
+  #redis配置
+  redis:
+    database: 0
+    host: 111.230.115.89
+    port: 6379
+    lettuce:
+      pool:
+        max-active: 500
+        max-idle: 100
+        max-wait: 10
+        min-idle: 1
 
 mybatis:
   mapperLocations: classpath:mapper/*Mapper.xml
@@ -21,6 +40,26 @@ shiro:
   cache:
     # cookie生效时间，单位秒
     maxAge: 3600
-
 server:
   port: 8081
+  error:
+    path: /error
+
+
+#文件配置
+file:
+  default:
+    dir: /usr/local/mdsoftware/wwwroot/files
+    ip: www.hxxxpt.com
+  qrCore:
+    dir: /usr/local/mdsoftware/wwwroot/files/qrcore/
+
+logging:
+  level:
+    com.nanshen.module.system.dao: debug
+
+pagehelper:
+  helper-dialect: mysql
+  reasonable: true
+  support-methods-arguments: true
+

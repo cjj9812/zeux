@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-@Component
+
 public class StringRedisDao {
 
     @Autowired
