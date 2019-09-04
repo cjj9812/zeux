@@ -15,15 +15,15 @@ spring:
       max-file-size: 8MB
   #redis配置
   redis:
-    database: 0
-    host: 111.230.115.89
+    database: 1
+    host: 111.230.15.89
     port: 6379
     lettuce:
       pool:
         max-active: 500
         max-idle: 100
         max-wait: 10
-        min-idle: 1
+    password: 123456
 
 mybatis:
   mapperLocations: classpath:mapper/*Mapper.xml

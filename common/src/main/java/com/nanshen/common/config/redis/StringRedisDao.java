@@ -12,6 +12,10 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 
+/**
+ * 多用于存储对象
+ */
+@Component
 public class StringRedisDao {
 
     @Autowired

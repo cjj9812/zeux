@@ -26,14 +26,4 @@ public class RedisConfig {
         return template;
     }
 
-
-    /**
-     * 注册StringRedisDao
-     * @return
-     */
-    @Bean
-    public  StringRedisDao stringRedisDao(){
-        return new StringRedisDao();
-    }
-
 }

@@ -16,6 +16,7 @@ import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 @RestController
@@ -27,7 +28,7 @@ public class LoginController extends BaseController {
 
 
     @PostMapping("/login")
-    public ReMessage login(@RequestBody Map<String ,Object> loginMap){
+    public ReMessage login(@RequestBody Map<String ,Object> loginMap, HttpServletRequest request){
         String name=(String)loginMap.get("name");
         String password=(String)loginMap.get("pwd");
         if(name==null||password==null||name.equals("")||password.equals("")){
