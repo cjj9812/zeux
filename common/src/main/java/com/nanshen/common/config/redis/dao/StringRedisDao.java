@@ -1,4 +1,4 @@
-package com.nanshen.common.config.redis;
+package com.nanshen.common.config.redis.dao;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

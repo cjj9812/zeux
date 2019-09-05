@@ -18,7 +18,7 @@ spring:
     database: 0
     host: 111.230.115.89
     port: 6379
-    lettuce:
+    jedis:
       pool:
         max-active: 500
         max-idle: 100

@@ -1,10 +1,9 @@
 package com.nanshen.common.common;
 
-import com.nanshen.common.config.redis.StringRedisDao;
+import com.nanshen.common.config.redis.dao.StringRedisDao;
 import com.nanshen.common.utils.EhCacheUtil;
 import com.nanshen.common.vo.PageVO;
 import net.sf.ehcache.Element;
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
