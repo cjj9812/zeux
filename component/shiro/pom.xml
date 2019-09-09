@@ -27,11 +27,5 @@
             <artifactId>system</artifactId>
             <version>${project.version}</version>
         </dependency>
-        <dependency>
-            <groupId>com.nanshen</groupId>
-            <artifactId>module</artifactId>
-            <version>1.0</version>
-            <scope>compile</scope>
-        </dependency>
     </dependencies>
 </project>

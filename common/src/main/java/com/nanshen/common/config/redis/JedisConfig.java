@@ -38,7 +38,7 @@ public class JedisConfig {
     }
 
     @Bean
-    public RedisStandaloneConfiguration jedisConfig() {
+    public RedisStandaloneConfiguration redisStandaloneConfiguration() {
         RedisStandaloneConfiguration config = new RedisStandaloneConfiguration();
         config.setHostName(host);
         config.setPort(port);
