@@ -7,54 +7,80 @@ import java.net.InetAddress;
 import java.net.NetworkInterface;
 
 
-
+/**
+ * 随机id生成工具类
+ * @author chennanshen
+ * @date 2019-9-16
+ */
 @Component
 public class IdWorker {
-    // 时间起始标记点，作为基准，一般取系统的最近时间（一旦确定不能变动）
-    private final static long twepoch = 1288834974657L;
-    // 机器标识位数
-    private final static long workerIdBits = 5L;
-    // 数据中心标识位数
-    private final static long datacenterIdBits = 5L;
-    // 机器ID最大值
-    private final static long maxWorkerId = -1L ^ (-1L << workerIdBits);
-    // 数据中心ID最大值
-    private final static long maxDatacenterId = -1L ^ (-1L << datacenterIdBits);
-    // 毫秒内自增位
-    private final static long sequenceBits = 12L;
-    // 机器ID偏左移12位
-    private final static long workerIdShift = sequenceBits;
-    // 数据中心ID左移17位
-    private final static long datacenterIdShift = sequenceBits + workerIdBits;
-    // 时间毫秒左移22位
-    private final static long timestampLeftShift = sequenceBits + workerIdBits + datacenterIdBits;
+    /**
+     * 时间起始标记点，作为基准，一般取系统的最近时间（一旦确定不能变动）
+     */
+    private final static long TWEPOCH = 1288834974657L;
+    /**
+     * 机器标识位数
+     */
+    private final static long WORKERIDBITS = 5L;
+    /**
+     * 数据中心标识位数
+     */
+    private final static long DATACENTERIDBITS = 5L;
+    /**
+     * 机器ID最大值
+     */
+    private final static long MAXWORKERID = -1L ^ (-1L << WORKERIDBITS);
+    /**
+     * 数据中心ID最大值
+     */
+    private final static long MAXDATACENTERID = -1L ^ (-1L << DATACENTERIDBITS);
+    /**
+     * 毫秒内自增位
+     */
+    private final static long SEQUENCEBITS = 12L;
+    /**
+     * 机器ID偏左移12位
+     */
+    private final static long WORKERIDSHIFT = SEQUENCEBITS;
+    /**
+     * 数据中心ID左移17位
+     */
+    private final static long DATACENTERIDSHIFT = SEQUENCEBITS + WORKERIDBITS;
+    /**
+     * 时间毫秒左移22位
+     */
+    private final static long TIMESTAMPLEFTSHIFT = SEQUENCEBITS + WORKERIDBITS + DATACENTERIDBITS;
 
-    private final static long sequenceMask = -1L ^ (-1L << sequenceBits);
-    /* 上次生产id时间戳 */
+    private final static long SEQUENCEMASK = -1L ^ (-1L << SEQUENCEBITS);
+    /**
+     * 上次生产id时间戳
+     */
     private static long lastTimestamp = -1L;
-    // 0，并发控制
+    /**
+     * 0，并发控制
+     */
     private long sequence = 0L;
 
     private final long workerId;
-    // 数据标识id部分
+    /**
+     * 数据标识id部分
+     */
     private final long datacenterId;
 
     public IdWorker(){
-        this.datacenterId = getDatacenterId(maxDatacenterId);
-        this.workerId = getMaxWorkerId(datacenterId, maxWorkerId);
+        this.datacenterId = getDatacenterId(MAXDATACENTERID);
+        this.workerId = getMaxWorkerId(datacenterId, MAXWORKERID);
     }
     /**
-     * @param workerId
-     *            工作机器ID
-     * @param datacenterId
-     *            序列号
+     * @param workerId 工作机器ID
+     * @param datacenterId 序列号
      */
     public IdWorker(long workerId, long datacenterId) {
-        if (workerId > maxWorkerId || workerId < 0) {
-            throw new IllegalArgumentException(String.format("worker Id can't be greater than %d or less than 0", maxWorkerId));
+        if (workerId > MAXWORKERID || workerId < 0) {
+            throw new IllegalArgumentException(String.format("worker Id can't be greater than %d or less than 0", MAXWORKERID));
         }
-        if (datacenterId > maxDatacenterId || datacenterId < 0) {
-            throw new IllegalArgumentException(String.format("datacenter Id can't be greater than %d or less than 0", maxDatacenterId));
+        if (datacenterId > MAXDATACENTERID || datacenterId < 0) {
+            throw new IllegalArgumentException(String.format("datacenter Id can't be greater than %d or less than 0", MAXDATACENTERID));
         }
         this.workerId = workerId;
         this.datacenterId = datacenterId;
@@ -72,7 +98,7 @@ public class IdWorker {
 
         if (lastTimestamp == timestamp) {
             // 当前毫秒内，则+1
-            sequence = (sequence + 1) & sequenceMask;
+            sequence = (sequence + 1) & SEQUENCEMASK;
             if (sequence == 0) {
                 // 当前毫秒内计数满了，则等待下一秒
                 timestamp = tilNextMillis(lastTimestamp);
@@ -82,9 +108,9 @@ public class IdWorker {
         }
         lastTimestamp = timestamp;
         // ID偏移组合生成最终的ID，并返回ID
-        Long nextId = ((timestamp - twepoch) << timestampLeftShift)
-                | (datacenterId << datacenterIdShift)
-                | (workerId << workerIdShift) | sequence;
+        Long nextId = ((timestamp - TWEPOCH) << TIMESTAMPLEFTSHIFT)
+                | (datacenterId << DATACENTERIDSHIFT)
+                | (workerId << WORKERIDSHIFT) | sequence;
 
         return nextId.toString();
     }
