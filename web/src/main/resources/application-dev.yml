@@ -25,9 +25,11 @@ spring:
         max-wait: 10
     password: 123456
 
+#mybatis配置
 mybatis:
   mapperLocations: classpath:mapper/*Mapper.xml
 
+#shiro配置
 shiro:
   user:
     # 登录地址
@@ -40,10 +42,19 @@ shiro:
   cache:
     # cookie生效时间，单位秒
     maxAge: 3600
+
+#tomcat配置
 server:
   port: 8081
   error:
     path: /error
+  tomcat:
+    #初始化线程数
+    min-spare-threads: 10
+    #最大线程数
+    max-threads: 100
+  #超时时间设置
+  connection-timeout: 5000
 
 
 #文件配置
@@ -54,10 +65,14 @@ file:
   qrCore:
     dir: /usr/local/mdsoftware/wwwroot/files/qrcore/
 
+
+#日志配置
 logging:
   level:
     com.nanshen.module.system.dao: debug
 
+
+#分页配置
 pagehelper:
   helper-dialect: mysql
   reasonable: true

@@ -5,5 +5,4 @@ public interface SortStrategy {
 
     Integer[] sortDesc(Integer[] array);
 
-
 }
