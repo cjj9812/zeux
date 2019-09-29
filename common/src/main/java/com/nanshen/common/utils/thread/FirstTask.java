@@ -11,7 +11,7 @@ public class FirstTask implements Runnable{
     private String name;
     private Integer status;
     private static volatile int state=1;
-    private static volatile int count=20;
+    private static volatile int count=30;
 
     private static Object object=new Object();
    public FirstTask(String name,Integer status){
@@ -22,22 +22,27 @@ public class FirstTask implements Runnable{
     @Override
     public void run() {
        while (count>0){
-           synchronized (object){
-               if(status!=state){
-                   try {
-                       object.wait();
-                   } catch (InterruptedException e) {
-                       e.printStackTrace();
-                   }
-               }
-               System.out.print(this.name);
-               count--;
-               state++;
-               if(state==4) state=1;
-               object.notifyAll();
-           }
-       }
+            synchronized (object){
+                while(state!=status){
+                    try {
+                        object.wait();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                System.out.println(name);
+                setCount();
+                object.notifyAll();
+            }
+        }
 
+    }
+
+
+    private void setCount(){
+       state++;
+        count--;
+        if(state==4) {state=1;}
     }
 
 }
