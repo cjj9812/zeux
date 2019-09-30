@@ -45,4 +45,13 @@ public class FirstTask implements Runnable{
         if(state==4) {state=1;}
     }
 
+    public static void main(String[] args) {
+        Thread threadA=new Thread(new FirstTask("A",1));
+        Thread threadB=new Thread(new FirstTask("B",2));
+        Thread threadC=new Thread(new FirstTask("C",3));
+        threadA.start();
+        threadB.start();
+        threadC.start();
+    }
+
 }
