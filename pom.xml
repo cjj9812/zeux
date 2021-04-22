@@ -27,7 +27,7 @@
 
     <properties>
         <java.version>1.8</java.version>
-        <shiro.version>1.4.0</shiro.version>
+        <shiro.version>1.7.1</shiro.version>
         <fastjson.version>1.2.15</fastjson.version>
         <pagehelper.version>1.2.3</pagehelper.version>
         <poi.version>4.0.0</poi.version>
